@@ -26,8 +26,12 @@
   }
 
   function mount(params) {
+    // 每次进入档案库都完整重置状态，避免跨页面残留旧 tab/旧数据
     state.detailItem = null;
-    if (params && params.kind && TABS.some((t) => t.key === params.kind)) state.tab = params.kind;
+    state.search = '';
+    if (params && params.kind && TABS.some((t) => t.key === params.kind)) {
+      state.tab = params.kind;
+    }
     loadItems();
     render();
   }

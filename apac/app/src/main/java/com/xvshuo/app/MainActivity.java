@@ -22,6 +22,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -39,6 +40,9 @@ import androidx.webkit.WebViewAssetLoader;
 public class MainActivity extends AppCompatActivity {
 
   private WebView webView;
+  // 文件选择回调（<input type="file"> 需 WebChromeClient.onShowFileChooser 支持）
+  private ValueCallback<Uri[]> fileChooserCallback;
+  private static final int FILE_CHOOSER_REQUEST = 1001;
 
   @SuppressLint("SetJavaScriptEnabled")
   @Override
@@ -99,6 +103,23 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public boolean onConsoleMessage(android.webkit.ConsoleMessage m) {
         return true; // 静默 console
+      }
+
+      // 支持 <input type="file">（如"导入数据"），拉起系统文件选择器
+      @Override
+      public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> filePathCallback,
+                                       FileChooserParams fileChooserParams) {
+        if (fileChooserCallback != null) {
+          fileChooserCallback.onReceiveValue(null);
+        }
+        fileChooserCallback = filePathCallback;
+        try {
+          startActivityForResult(fileChooserParams.createIntent(), FILE_CHOOSER_REQUEST);
+        } catch (Exception e) {
+          fileChooserCallback = null;
+          return false;
+        }
+        return true;
       }
     });
 
@@ -199,7 +220,31 @@ public class MainActivity extends AppCompatActivity {
   }
 
   @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode != FILE_CHOOSER_REQUEST || fileChooserCallback == null) return;
+    Uri[] results = null;
+    if (resultCode == RESULT_OK && data != null) {
+      if (data.getData() != null) {
+        results = new Uri[]{ data.getData() };
+      } else if (data.getClipData() != null) {
+        int n = data.getClipData().getItemCount();
+        results = new Uri[n];
+        for (int i = 0; i < n; i++) {
+          results[i] = data.getClipData().getItemAt(i).getUri();
+        }
+      }
+    }
+    fileChooserCallback.onReceiveValue(results);
+    fileChooserCallback = null;
+  }
+
+  @Override
   protected void onDestroy() {
+    if (fileChooserCallback != null) {
+      fileChooserCallback.onReceiveValue(null);
+      fileChooserCallback = null;
+    }
     if (webView != null) webView.destroy();
     super.onDestroy();
   }
