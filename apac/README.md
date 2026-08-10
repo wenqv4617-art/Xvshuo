@@ -7,7 +7,7 @@
 ```
 apac/
 ├── app/
-│   ├── build.gradle            # 应用模块（compileSdk 34 / minSdk 24）
+│   ├── build.gradle            # 应用模块（compileSdk 34 / minSdk 24 / 固定签名支持）
 │   └── src/main/
 │       ├── AndroidManifest.xml
 │       ├── assets/www/         # ← 静态站点（build-apk.sh 自动拷入，勿手改）
@@ -17,27 +17,46 @@ apac/
 └── README.md
 ```
 
-## 如何打包 APK
+## 一键：GitHub Actions 自动构建 APK（推荐）
 
-> 沙箱/纯前端环境没有 Android SDK，无法直接产出 .apk 二进制。
-> 本壳工程是完整可编译的，在装有 Android Studio 的机器上两步即可：
+仓库根目录已配置 `.github/workflows/build-apk.yml`。**每次 push 到 main 自动构建**：
 
-### 方式 A（推荐 · Android Studio）
+1. 首次先配置固定签名（见下节"固定签名"）。
+2. `git push` 后进入仓库 **Actions** 标签页，等待 `Build Xvshuo APK` 运行完成。
+3. 在运行结果页 **Artifacts** 下载 `xvshuo-apk`，解压得到 `app-release.apk`，直接安装即可。
+   > 不是 tar 文件：工作流产物是 APK 本身（GitHub 用 zip 包裹，解压即 .apk）。
+   > 若你的仓库此前有旧的 Pages 部署工作流（产物是 tar.gz），请删除它——网页部署已改走 Vercel。
 
-1. 打开 Android Studio → `Open` → 选择本项目的 `apac/` 目录。
-2. 等待 Gradle 同步完成（首次会自动下载依赖与 gradle wrapper）。
-3. 运行 `bash scripts/build-apk.sh`（或直接点 AS 的 Run ▶ 装机调试）。
+## 固定签名（覆盖安装必需）
 
-### 方式 B（命令行）
+> 只有签名一致，新 APK 才能覆盖安装旧版本。CI 每次构建必须用同一个 keystore。
+
+1. 本地执行一次：
+   ```bash
+   bash scripts/generate-keystore.sh
+   ```
+   它会生成 `apac/keystore.jks` + `apac/keystore.properties`，并打印 4 个 Secrets 值。
+2. 打开仓库 **Settings → Secrets and variables → Actions**，新建：
+   - `KEYSTORE_BASE64`（keystore 文件的 base64）
+   - `KS_STORE_PW_B64`（storePassword 的 base64）
+   - `KS_ALIAS_B64`（keyAlias 的 base64）
+   - `KS_KEY_PW_B64`（keyPassword 的 base64）
+3. 之后每次 push，Actions 都会用该 keystore 签名 → **签名一致 + versionCode 自动递增 → 可直接覆盖安装**。
+
+> 未配置 Secrets 时，CI 仍会构建但使用 debug 签名（每次不同，无法覆盖安装），日志会警告。
+> keystore 与 properties 已在 .gitignore 中排除，绝不会入库。请备份到安全位置，丢失后无法再升级。
+
+## 本地构建
+
+前置：JDK 17+、Android SDK（ANDROID_HOME 或 apac/local.properties 指向 SDK）。
 
 ```bash
-# 前置：JDK 17+、Android SDK（ANDROID_HOME 或 apac/local.properties 指向 SDK）
-cd apac
-gradle assembleDebug
-# 输出：apac/app/build/outputs/apk/debug/app-debug.apk
+bash scripts/build-apk.sh debug     # 调试包
+bash scripts/build-apk.sh release   # 发布包（读取 keystore.properties 固定签名）
+bash scripts/build-apk.sh sync      # 仅同步静态文件
 ```
-
-安装：`adb install -r apac/app/build/outputs/apk/debug/app-debug.apk`
+输出：`apac/app/build/outputs/apk/{debug,release}/app-{debug,release}.apk`
+安装：`adb install -r apac/app/build/outputs/apk/release/app-release.apk`
 
 ## APK 环境兼容说明
 
@@ -57,4 +76,4 @@ gradle assembleDebug
 
 - 换图标：替换 `app/src/main/res/drawable/ic_launcher_foreground.xml` 与背景色 `values/colors.xml`。
 - 改应用名：`app/src/main/res/values/strings.xml` 的 `app_name`。
-- 发布正式版：在 `app/build.gradle` 配置 signingConfig 后执行 `gradle assembleRelease`。
+- 改版本号：`app/build.gradle` 的 `versionName`（versionCode 每次构建自动递增，无需手改）。

@@ -1,6 +1,16 @@
 // app/build.gradle — Xvshuo WebView 壳应用模块
+// 签名：存在 keystore.properties（CI 从 Secrets 生成，本地可手建）时用固定 keystore 签 release；
+//       缺失时回退 debug 签名（仅本地调试用，无法跨机器覆盖安装）。
 plugins {
     id 'com.android.application'
+}
+
+// 读取签名配置（不入库）
+def ksProps = new Properties()
+def ksFile = rootProject.file('keystore.properties')
+def hasKs = ksFile.exists()
+if (hasKs) {
+    ksFile.withInputStream { ksProps.load(it) }
 }
 
 android {
@@ -11,14 +21,30 @@ android {
         applicationId "com.xvshuo.app"
         minSdk 24
         targetSdk 34
-        versionCode 104
+        // 每次构建 versionCode 递增（自 2024-01-01 起的秒数），覆盖安装时版本更高
+        versionCode (int) ((System.currentTimeMillis() / 1000L) - 1704067200L)
         versionName "1.0.4"
+    }
+
+    signingConfigs {
+        release {
+            if (hasKs) {
+                storeFile rootProject.file(ksProps['storeFile'])
+                storePassword ksProps['storePassword']
+                keyAlias ksProps['keyAlias']
+                keyPassword ksProps['keyPassword']
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig hasKs ? signingConfigs.release : signingConfigs.debug
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 

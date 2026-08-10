@@ -1,0 +1,77 @@
+# ============================================================
+# Xvshuo 叙说 · APK 构建工作流
+# 每次 push 到 main（或手动触发）都会：
+#   1) 在 ubuntu-latest（自带 Android SDK）上构建 apac/ WebView 壳
+#   2) 用仓库 Secrets 里的固定 keystore 签名 release APK
+#   3) 上传 app-release.apk 为 Artifact（下载后直接安装）
+#
+# 固定签名 → 每次构建的 APK 签名一致 → 可覆盖安装
+#
+# 首次配置 Secrets（仓库 Settings → Secrets and variables → Actions）：
+#   运行 scripts/generate-keystore.sh 生成 keystore 后，按输出添加：
+#   KEYSTORE_BASE64 / KS_STORE_PW_B64 / KS_ALIAS_B64 / KS_KEY_PW_B64
+# 未配置时构建会用 debug 签名（每次不同，无法覆盖安装），并在日志中警告。
+# ============================================================
+name: Build Xvshuo APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.2.2
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.2.2'
+
+      # ---- 固定签名：从 Secrets 恢复 keystore ----
+      - name: Restore signing keystore
+        shell: bash
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > apac/keystore.jks
+            cat > apac/keystore.properties <<EOF
+          storeFile=keystore.jks
+          storePassword=$(echo "${{ secrets.KS_STORE_PW_B64 }}" | base64 -d)
+          keyAlias=$(echo "${{ secrets.KS_ALIAS_B64 }}" | base64 -d)
+          keyPassword=$(echo "${{ secrets.KS_KEY_PW_B64 }}" | base64 -d)
+          EOF
+            echo "keystore restored (fixed signature)"
+          else
+            echo "::warning::KEYSTORE_BASE64 未配置，将使用 debug 签名（每次不同，无法覆盖安装）。请运行 scripts/generate-keystore.sh 并配置 4 个 Secrets。"
+          fi
+
+      # ---- 静态站点拷入 WebView assets ----
+      - name: Sync static files into assets/www
+        shell: bash
+        run: bash scripts/build-apk.sh sync
+
+      # ---- 构建 release APK ----
+      - name: Build release APK
+        shell: bash
+        run: bash scripts/build-apk.sh release
+
+      # ---- 上传 APK（Artifact 下载即 .apk）----
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: xvshuo-apk
+          path: apac/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 30

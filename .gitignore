@@ -14,3 +14,12 @@ pnpm-debug.log*
 
 # 用户本地数据（不应提交）
 assets/icons/*.tmp
+
+# Android 签名（绝不入库）
+apac/keystore.jks
+apac/keystore.properties
+apac/app/build/
+apac/.gradle/
+apac/local.properties
+*.jks
+*.keystore
