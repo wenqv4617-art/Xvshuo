@@ -53,11 +53,10 @@
     searchBar.appendChild(search);
     root.appendChild(searchBar);
 
-    // 分类标题 + 计数（分类切换走侧边栏）
+    // 分类标题（分类切换走侧边栏；数量统计已移除，避免统计口径引发困惑）
     const curTab = TABS.find((t) => t.key === state.tab) || TABS[0];
     const pageHead = el('div', { class: 'archive-page-head' });
     pageHead.appendChild(el('div', { class: 'archive-page-head__title' }, curTab.label));
-    pageHead.appendChild(el('div', { class: 'archive-page-head__count' }, String(state.items.length)));
     root.appendChild(pageHead);
 
     // 列表容器
