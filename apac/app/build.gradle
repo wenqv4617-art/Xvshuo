@@ -54,4 +54,6 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    // WebViewAssetLoader：以虚拟 https 域承载 assets，解决 file:// 下 query/IndexedDB 问题
+    implementation 'androidx.webkit:webkit:1.8.0'
 }

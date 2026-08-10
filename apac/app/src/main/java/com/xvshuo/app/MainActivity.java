@@ -18,6 +18,7 @@ import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -27,6 +28,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.webkit.WebViewAssetLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,11 +60,24 @@ public class MainActivity extends AppCompatActivity {
       s.setUserAgentString(ua + " XvshuoNative");
     }
 
+    // 官方推荐：用虚拟 https 域（appassets.androidplatform.net）承载 assets，
+    // 避免 file:// 协议下 query 参数（?v=）被当作文件名、IndexedDB/localStorage
+    // origin 不可用等问题，使 APK 内页面行为与网页端一致。
+    final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
+        .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
+        .build();
+
     webView.setWebViewClient(new WebViewClient() {
+      @Override
+      public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        return assetLoader.shouldInterceptRequest(request.getUrl());
+      }
+
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         String url = request.getUrl().toString();
-        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file://")) {
+        if (url.startsWith("https://appassets.androidplatform.net/")
+            || url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file://")) {
           return false; // 留在 WebView 内打开
         }
         return true;
@@ -101,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    // 离线优先：优先 file:///android_asset/www/index.html（打包时静态文件会拷入 assets/www）
-    webView.loadUrl("file:///android_asset/www/index.html");
+    // 离线优先：通过 WebViewAssetLoader 的虚拟 https 域加载打包进 assets/www 的静态页面
+    webView.loadUrl("https://appassets.androidplatform.net/assets/www/index.html");
   }
 
   private String filenameFrom(String contentDisposition, String url, String fallback) {

@@ -22,6 +22,11 @@
       console.info('[pwa] SW skipped: file:// protocol');
       return;
     }
+    // WebViewAssetLoader 的虚拟 asset 域无真实 SW 能力，跳过
+    if (location.hostname === 'appassets.androidplatform.net') {
+      console.info('[pwa] SW skipped: WebView asset domain');
+      return;
+    }
     if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
       console.info('[pwa] SW requires https or localhost');
     }
