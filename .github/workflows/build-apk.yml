@@ -30,11 +30,12 @@ jobs:
           java-version: '17'
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        # v4 修复了 v3 的多行 packages 解析 bug（会把两个包名拼成一个参数传给 sdkmanager，
+        # 导致 "Failed to find package 'platforms;android-34\nbuild-tools;34.0.0'"）。
+        # v4 的 packages 为空格分隔，每个包单独调用一次 sdkmanager。
+        uses: android-actions/setup-android@v4
         with:
-          packages: |
-            platforms;android-34
-            build-tools;34.0.0
+          packages: platforms;android-34 build-tools;34.0.0
 
       - name: Set up Gradle 8.2.2
         uses: gradle/actions/setup-gradle@v4
