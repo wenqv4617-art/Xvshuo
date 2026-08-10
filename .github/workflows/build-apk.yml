@@ -59,7 +59,10 @@ jobs:
         if: ${{ failure() }}
         shell: bash
         run: |
-          grep -nE "What went wrong|Execution failed for task|Could not (get|resolve|find|download)|Caused by|FAILURE:|> " "$RUNNER_TEMP/gradle-build.log" 2>/dev/null | head -60 | while IFS= read -r l; do echo "::error::$l"; done
+          LOG="$RUNNER_TEMP/gradle-build.log"
+          {
+            sed -n '/^FAILURE:/,$p' "$LOG"
+          } 2>/dev/null | head -100 | while IFS= read -r l; do echo "::error::$l"; done
           echo "::error::完整日志见 artifact gradle-build-log"
 
       - name: Upload build log on failure
