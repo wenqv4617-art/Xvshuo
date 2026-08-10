@@ -20,7 +20,7 @@ android {
         minSdk 24
         targetSdk 34
         // 每次构建 versionCode 递增（自 2024-01-01 起的秒数），覆盖安装时版本更高
-        versionCode (int) ((System.currentTimeMillis() / 1000L) - 1704067200L)
+        versionCode = (int) ((System.currentTimeMillis() / 1000L) - 1704067200L)
         versionName "1.0.4"
     }
 
