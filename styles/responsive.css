@@ -1,0 +1,176 @@
+/* =========================================================================
+ * responsive.css — 响应式适配（手机优先，全面防横向溢出）
+ * 手机 / 平板 / iOS fullscreen
+ * ========================================================================= */
+
+/* iOS fullscreen / safe-area */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 全局防横向溢出：body/html 一律不产生水平滚动条 */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+body {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/* === 全局弹性收缩 ===
+ * 任何表单/搜索元素不允许用固定 min-width 撑破屏幕 */
+.input, .textarea, .select { min-width: 0; }
+.search-input { min-width: 0; flex: 1 1 auto; }
+.taglib-search { max-width: 100%; }
+.toast { min-width: 0; max-width: calc(100vw - 48px); }
+pre { overflow-wrap: anywhere; word-break: break-word; }
+iframe { max-width: 100%; }
+
+/* 网格/弹性布局子项允许收缩（防内容 max-content 撑爆整页） */
+.app-body,
+.main,
+.page,
+.page__header,
+.gensplit,
+.gen-nav,
+.gen-panels,
+.gen-panel,
+.settings-layout,
+.form-grid,
+.archive-grid,
+.preset-list,
+.taglib { min-width: 0; }
+
+/* Tabs：条目多时允许横向滚动（不撑破页面） */
+.tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs__item {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* 允许自动换行的 flex 容器（防挤压溢出） */
+.input-group,
+.card-header,
+.style-item__head,
+.archive-card__actions,
+.gen-panel__head { flex-wrap: wrap; }
+
+/* 平板 (601-1024) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .app-body { grid-template-columns: 200px 1fr; }
+  .main { padding: var(--space-6); }
+  .grid-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 手机横屏 / 窄平板 (≤ 900) */
+@media (max-width: 900px) {
+  .topbar { padding: 0 var(--space-4); }
+  .topbar__title { font-size: var(--fs-sm); }
+  .topbar__subtitle { display: none; }
+  .app-body { grid-template-columns: 1fr; }
+  .sidenav { display: none; position: fixed; }
+  .sidenav.is-open { display: block; transform: translateX(0); }
+  .main { padding: var(--space-4); }
+
+  /* 板块导航：横向滑动，不出页面 */
+  .gen-nav__list { max-width: 100%; }
+  .gen-panels { gap: var(--space-4); }
+
+  /* 生成页底部栏高度预留 */
+  .gensplit { padding-bottom: 150px; }
+}
+
+/* 手机 (≤ 600) */
+@media (max-width: 600px) {
+  :root {
+    --fs-display: 2.2rem;
+    --fs-display-sm: 1.75rem;
+    --fs-h1: 1.4rem;
+    --fs-h2: 1.2rem;
+  }
+  .topbar { height: 52px; }
+  .topbar__brand-mark { width: 28px; height: 28px; font-size: 14px; }
+  .main { padding: var(--space-3); }
+  .entry-card { min-height: 140px; padding: var(--space-4); }
+  .entry-card__title { font-size: var(--fs-h3); }
+  .entry-card__icon { width: 22px; height: 22px; }
+  .modal { padding: var(--space-2); align-items: flex-end; }
+  .modal-card { max-height: 90vh; max-height: 90dvh; max-width: 100%; }
+  .gen-actionbar { padding: var(--space-3); }
+  .gen-actionbar__btns { flex-direction: column; }
+  .gen-actionbar__btns .btn { width: 100%; }
+  .gen-actionbar.is-collapsed { flex-direction: row; padding: var(--space-2); }
+  .gen-actionbar.is-collapsed .btn { width: auto; }
+  .grid-cards { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+  .sandbox { grid-template-columns: 1fr; }
+
+  /* 档案库：搜索整行置顶，Tab 横滑 */
+  .archive-toolbar { flex-direction: column; align-items: stretch; }
+  .archive-search { margin-bottom: var(--space-4); }
+  .archive-search .search-input { width: 100%; }
+  .archive-toolbar__filters { width: 100%; }
+
+  /* 正则步骤行：允许换行，输入框最小宽度 */
+  .sandbox-step { flex-wrap: wrap; gap: var(--space-2); }
+  .sandbox-step .input { min-width: 130px; }
+
+  /* 输入组：输入框整行 + 按钮换行 */
+  .input-group .input { flex: 1 1 100%; min-width: 140px; }
+  .input-group .btn { flex: 1 1 auto; }
+
+  /* 板块头：描述/箭头换行到底部，标题整行 */
+  .gen-panel__head { flex-direction: column; align-items: stretch; gap: var(--space-2); }
+  .gen-panel { padding: var(--space-4); }
+
+  /* 详情 meta 单列 + 长文本断行 */
+  .detail-meta { grid-template-columns: 1fr; gap: var(--space-1) 0; }
+  .detail-meta__value { overflow-wrap: anywhere; word-break: break-word; }
+
+  /* 卡片头/条目头：允许换行 */
+  .card-header { flex-wrap: wrap; gap: var(--space-2); }
+  .style-item__head { flex-wrap: wrap; gap: var(--space-2); }
+
+  /* 按钮防撑破 */
+  .btn { max-width: 100%; }
+  .btn--block { width: 100%; }
+  .btn--lg { width: 100%; }
+
+  /* 设置页预设列表：卡片间距 */
+  .settings-layout { gap: var(--space-6); }
+}
+
+/* iOS 输入防默认缩放 */
+@supports (-webkit-touch-callout: none) {
+  .input, .textarea, .select { font-size: 16px; }
+}
+
+/* 横屏 + 大屏 (≥ 1280) */
+@media (min-width: 1280px) {
+  .main { padding: var(--space-12) var(--space-12); max-width: var(--content-wide); margin: 0 auto; }
+  .grid-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 触控优化 */
+@media (hover: none) {
+  .entry-card:hover { transform: none; box-shadow: none; }
+  .entry-card:active { transform: scale(0.99); }
+}
+
+/* 减少动画（系统设置） */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

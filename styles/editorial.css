@@ -1,0 +1,150 @@
+/* =========================================================================
+ * editorial.css — EDITORIAL 风格专项
+ * 大留白 / 强对比 / 网格分隔线 / 编号排版 / 衬线大标题
+ * ========================================================================= */
+
+/* 段落、列表编辑风 */
+.editorial-prose {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+  max-width: 68ch;
+}
+.editorial-prose p { margin-bottom: var(--space-4); }
+
+/* 大数字 + 副标 */
+.stat-block {
+  display: flex; flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) 0;
+}
+.stat-block__num {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.stat-block__label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-ink-muted);
+}
+
+/* 章节标头 + 水平细线 */
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-6);
+  border-bottom: var(--border-thin);
+}
+.section-head__title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.02em;
+}
+.section-head__num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-ink-muted);
+}
+.section-head__hint {
+  font-size: var(--fs-xs);
+  color: var(--color-ink-muted);
+}
+
+/* 中部垂直分隔线（双列编辑风） */
+.column-divider {
+  position: relative;
+}
+.column-divider::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  right: -16px;
+  width: 1px;
+  background: var(--color-line-soft);
+}
+
+/* 双列：左数字 + 右内容 */
+.dual-col {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+  border-bottom: var(--border-thin);
+}
+.dual-col:last-child { border-bottom: 0; }
+.dual-col__num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-h2);
+  color: var(--color-ink-muted);
+  font-weight: var(--fw-regular);
+}
+.dual-col__content { padding-top: var(--space-2); }
+
+/* 编辑风强调：左侧粗黑边 */
+.accent-bar {
+  border-left: 3px solid var(--color-ink);
+  padding-left: var(--space-4);
+}
+
+/* 极简进度条 */
+.thin-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--color-line-soft);
+  position: relative;
+  overflow: hidden;
+}
+.thin-bar__fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--color-ink);
+  transition: width var(--dur-base) var(--ease-out);
+}
+
+/* 编号标题（每节加 X/Y 编号） */
+.index-title {
+  display: flex; align-items: baseline; gap: var(--space-3);
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+}
+.index-title__num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--color-ink-muted);
+  font-weight: var(--fw-regular);
+}
+
+/* 大矩形 mark */
+.mark-block {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* 装饰斜分割（编辑风） */
+.slash-divider {
+  display: flex; align-items: center; gap: var(--space-2);
+  color: var(--color-ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+.slash-divider::before,
+.slash-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-line-soft);
+}

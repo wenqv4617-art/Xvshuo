@@ -1,0 +1,24 @@
+{
+  "name": "叙说 Xvshuo - AI 人设生成器",
+  "short_name": "叙说",
+  "description": "AI Persona Atelier for SillyTavern / StableDiffusion / Airp",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#0a0a0a",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "新建 user 人设", "url": "/user-gen", "icons": [{"src":"/assets/icons/icon-192.png","sizes":"192x192"}] },
+    { "name": "新建 char 人设", "url": "/char-gen", "icons": [{"src":"/assets/icons/icon-192.png","sizes":"192x192"}] },
+    { "name": "档案库", "url": "/archive", "icons": [{"src":"/assets/icons/icon-192.png","sizes":"192x192"}] }
+  ]
+}
