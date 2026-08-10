@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-apk:
@@ -90,4 +90,20 @@ jobs:
           name: xvshuo-apk
           path: ${{ steps.locate.outputs.apk_path }}
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
+
+      - name: Publish APK to GitHub Release
+        # 每次成功构建都更新同一条 release（tag v1.0.4），APK 永久可下载，
+        # 不依赖会过期的 Actions artifact。
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.4
+          name: Xvshuo v1.0.4
+          body: |
+            自动构建产物（每次 push 到 main 自动更新）。
+            应用名：叙说 Xvshuo · AI 人设生成器
+            安装：下载 xvshuo-release.apk 安装；同签名可覆盖安装。
+          files: ${{ steps.locate.outputs.apk_path }}
+          update_existing: true
+          latest: true
+          fail_on_unmatched_files: true

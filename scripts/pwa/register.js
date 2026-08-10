@@ -17,6 +17,11 @@
 
   function register() {
     if (!('serviceWorker' in navigator)) return;
+    // file:// 协议（如 Android WebView 内加载 assets）不支持 Service Worker，直接跳过
+    if (location.protocol === 'file:') {
+      console.info('[pwa] SW skipped: file:// protocol');
+      return;
+    }
     if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
       console.info('[pwa] SW requires https or localhost');
     }

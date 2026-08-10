@@ -15,14 +15,14 @@
 <meta property="og:title" content="叙说 Xvshuo · AI 人设生成器">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
 <!-- iOS 启动图（多分辨率） -->
-<link rel="apple-touch-startup-image" href="/assets/splash/splash-1170x2532.png" media="(device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3)">
-<link rel="apple-touch-startup-image" href="/assets/splash/splash-1242x2688.png" media="(device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:3)">
-<link rel="apple-touch-startup-image" href="/assets/splash/splash-750x1334.png" media="(device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2)">
-<link rel="apple-touch-startup-image" href="/assets/splash/splash-2048x2732.png" media="(min-width:1024px) and (-webkit-device-pixel-ratio:2)">
+<link rel="apple-touch-startup-image" href="assets/splash/splash-1170x2532.png" media="(device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3)">
+<link rel="apple-touch-startup-image" href="assets/splash/splash-1242x2688.png" media="(device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:3)">
+<link rel="apple-touch-startup-image" href="assets/splash/splash-750x1334.png" media="(device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2)">
+<link rel="apple-touch-startup-image" href="assets/splash/splash-2048x2732.png" media="(min-width:1024px) and (-webkit-device-pixel-ratio:2)">
 
 <!-- Dexie (本地 IndexedDB) -->
 <script src="https://cdn.jsdelivr.net/npm/dexie@3.2.7/dist/dexie.min.js" defer></script>
@@ -30,13 +30,13 @@
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js" defer></script>
 
 <!-- 样式：HTTP 头静态资源长缓存，版本号通过 ?v 失效 -->
-<link rel="stylesheet" href="/styles/tokens.css?v=1.0.4">
-<link rel="stylesheet" href="/styles/base.css?v=1.0.4">
-<link rel="stylesheet" href="/styles/layout.css?v=1.0.4">
-<link rel="stylesheet" href="/styles/components.css?v=1.0.4">
-<link rel="stylesheet" href="/styles/pages.css?v=1.0.4">
-<link rel="stylesheet" href="/styles/editorial.css?v=1.0.4">
-<link rel="stylesheet" href="/styles/responsive.css?v=1.0.4">
+<link rel="stylesheet" href="styles/tokens.css?v=1.0.4">
+<link rel="stylesheet" href="styles/base.css?v=1.0.4">
+<link rel="stylesheet" href="styles/layout.css?v=1.0.4">
+<link rel="stylesheet" href="styles/components.css?v=1.0.4">
+<link rel="stylesheet" href="styles/pages.css?v=1.0.4">
+<link rel="stylesheet" href="styles/editorial.css?v=1.0.4">
+<link rel="stylesheet" href="styles/responsive.css?v=1.0.4">
 </head>
 <body>
 
@@ -180,67 +180,67 @@
 <!-- Dexie 已 defer 在 <head> -->
 
 <!-- 自身模块（按依赖顺序 + defer 已保证顺序） -->
-<script src="/scripts/utils/version.js?v=1.0.4" defer></script>
-<script src="/scripts/utils/dom.js?v=1.0.4" defer></script>
-<script src="/scripts/utils/format.js?v=1.0.4" defer></script>
-<script src="/scripts/utils/debounce.js?v=1.0.4" defer></script>
-<script src="/scripts/utils/id.js?v=1.0.4" defer></script>
-<script src="/scripts/utils/clone.js?v=1.0.4" defer></script>
-<script src="/scripts/utils/export.js?v=1.0.4" defer></script>
+<script src="scripts/utils/version.js?v=1.0.4" defer></script>
+<script src="scripts/utils/dom.js?v=1.0.4" defer></script>
+<script src="scripts/utils/format.js?v=1.0.4" defer></script>
+<script src="scripts/utils/debounce.js?v=1.0.4" defer></script>
+<script src="scripts/utils/id.js?v=1.0.4" defer></script>
+<script src="scripts/utils/clone.js?v=1.0.4" defer></script>
+<script src="scripts/utils/export.js?v=1.0.4" defer></script>
 
-<script src="/scripts/icons.js?v=1.0.4" defer></script>
-<script src="/scripts/events.js?v=1.0.4" defer></script>
-<script src="/scripts/store.js?v=1.0.4" defer></script>
-<script src="/scripts/db.js?v=1.0.4" defer></script>
+<script src="scripts/icons.js?v=1.0.4" defer></script>
+<script src="scripts/events.js?v=1.0.4" defer></script>
+<script src="scripts/store.js?v=1.0.4" defer></script>
+<script src="scripts/db.js?v=1.0.4" defer></script>
 
-<script src="/scripts/components/ui.js?v=1.0.4" defer></script>
-<script src="/scripts/components/modal.js?v=1.0.4" defer></script>
-<script src="/scripts/components/toast.js?v=1.0.4" defer></script>
-<script src="/scripts/components/accordion.js?v=1.0.4" defer></script>
-<script src="/scripts/components/tabs.js?v=1.0.4" defer></script>
-<script src="/scripts/components/tag-library.js?v=1.0.4" defer></script>
-<script src="/scripts/components/loading-overlay.js?v=1.0.4" defer></script>
+<script src="scripts/components/ui.js?v=1.0.4" defer></script>
+<script src="scripts/components/modal.js?v=1.0.4" defer></script>
+<script src="scripts/components/toast.js?v=1.0.4" defer></script>
+<script src="scripts/components/accordion.js?v=1.0.4" defer></script>
+<script src="scripts/components/tabs.js?v=1.0.4" defer></script>
+<script src="scripts/components/tag-library.js?v=1.0.4" defer></script>
+<script src="scripts/components/loading-overlay.js?v=1.0.4" defer></script>
 
 <!-- API 适配层 -->
-<script src="/scripts/api/protocol.js?v=1.0.4" defer></script>
-<script src="/scripts/api/adapters/openai.js?v=1.0.4" defer></script>
-<script src="/scripts/api/adapters/anthropic.js?v=1.0.4" defer></script>
-<script src="/scripts/api/adapters/gemini.js?v=1.0.4" defer></script>
-<script src="/scripts/api/adapters/custom.js?v=1.0.4" defer></script>
-<script src="/scripts/api/client.js?v=1.0.4" defer></script>
-<script src="/scripts/api/response-parser.js?v=1.0.4" defer></script>
+<script src="scripts/api/protocol.js?v=1.0.4" defer></script>
+<script src="scripts/api/adapters/openai.js?v=1.0.4" defer></script>
+<script src="scripts/api/adapters/anthropic.js?v=1.0.4" defer></script>
+<script src="scripts/api/adapters/gemini.js?v=1.0.4" defer></script>
+<script src="scripts/api/adapters/custom.js?v=1.0.4" defer></script>
+<script src="scripts/api/client.js?v=1.0.4" defer></script>
+<script src="scripts/api/response-parser.js?v=1.0.4" defer></script>
 
 <!-- 标签库数据 -->
-<script src="/scripts/data/tags-appearance.js?v=1.0.4" defer></script>
-<script src="/scripts/data/tags-personality.js?v=1.0.4" defer></script>
-<script src="/scripts/data/tags-history.js?v=1.0.4" defer></script>
-<script src="/scripts/data/tags-speech.js?v=1.0.4" defer></script>
-<script src="/scripts/data/tags-relations.js?v=1.0.4" defer></script>
-<script src="/scripts/data/tags-scenario.js?v=1.0.4" defer></script>
+<script src="scripts/data/tags-appearance.js?v=1.0.4" defer></script>
+<script src="scripts/data/tags-personality.js?v=1.0.4" defer></script>
+<script src="scripts/data/tags-history.js?v=1.0.4" defer></script>
+<script src="scripts/data/tags-speech.js?v=1.0.4" defer></script>
+<script src="scripts/data/tags-relations.js?v=1.0.4" defer></script>
+<script src="scripts/data/tags-scenario.js?v=1.0.4" defer></script>
 
 <!-- Prompt 构建器 -->
-<script src="/scripts/generators/user-prompt.js?v=1.0.4" defer></script>
-<script src="/scripts/generators/char-prompt.js?v=1.0.4" defer></script>
-<script src="/scripts/generators/worldbook-prompt.js?v=1.0.4" defer></script>
-<script src="/scripts/generators/regex-prompt.js?v=1.0.4" defer></script>
-<script src="/scripts/generators/side-story-prompt.js?v=1.0.4" defer></script>
-<script src="/scripts/generators/html-prompt.js?v=1.0.4" defer></script>
+<script src="scripts/generators/user-prompt.js?v=1.0.4" defer></script>
+<script src="scripts/generators/char-prompt.js?v=1.0.4" defer></script>
+<script src="scripts/generators/worldbook-prompt.js?v=1.0.4" defer></script>
+<script src="scripts/generators/regex-prompt.js?v=1.0.4" defer></script>
+<script src="scripts/generators/side-story-prompt.js?v=1.0.4" defer></script>
+<script src="scripts/generators/html-prompt.js?v=1.0.4" defer></script>
 
-<script src="/scripts/pages/home.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/settings.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/user-gen.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/char-gen.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/archive.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/worldbook.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/style.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/regex.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/side-story.js?v=1.0.4" defer></script>
-<script src="/scripts/pages/html-snippet.js?v=1.0.4" defer></script>
+<script src="scripts/pages/home.js?v=1.0.4" defer></script>
+<script src="scripts/pages/settings.js?v=1.0.4" defer></script>
+<script src="scripts/pages/user-gen.js?v=1.0.4" defer></script>
+<script src="scripts/pages/char-gen.js?v=1.0.4" defer></script>
+<script src="scripts/pages/archive.js?v=1.0.4" defer></script>
+<script src="scripts/pages/worldbook.js?v=1.0.4" defer></script>
+<script src="scripts/pages/style.js?v=1.0.4" defer></script>
+<script src="scripts/pages/regex.js?v=1.0.4" defer></script>
+<script src="scripts/pages/side-story.js?v=1.0.4" defer></script>
+<script src="scripts/pages/html-snippet.js?v=1.0.4" defer></script>
 
-<script src="/scripts/router.js?v=1.0.4" defer></script>
-<script src="/scripts/app.js?v=1.0.4" defer></script>
+<script src="scripts/router.js?v=1.0.4" defer></script>
+<script src="scripts/app.js?v=1.0.4" defer></script>
 
 <!-- PWA 注册（最后） -->
-<script src="/scripts/pwa/register.js?v=1.0.4" defer></script>
+<script src="scripts/pwa/register.js?v=1.0.4" defer></script>
 </body>
 </html>
