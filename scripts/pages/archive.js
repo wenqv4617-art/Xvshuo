@@ -83,6 +83,37 @@
       }));
       return;
     }
+
+    // user / char：按"基础信息→分组"填写的分组名，手风琴式收起展开；
+    // 未填写分组的归入"默认分组"
+    if (state.tab === 'user' || state.tab === 'char') {
+      const groups = {};
+      for (const it of filtered) {
+        const key = (it.groupId && String(it.groupId).trim())
+          ? String(it.groupId).trim()
+          : '__default__';
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(it);
+      }
+      const keys = Object.keys(groups).sort((a, b) => {
+        if (a === '__default__') return 1;   // 默认分组置底
+        if (b === '__default__') return -1;
+        return a.localeCompare(b, 'zh-CN');
+      });
+      for (const key of keys) {
+        const body = el('div', { class: 'archive-grid' });
+        for (const it of groups[key]) body.appendChild(renderCard(it));
+        const acc = global.accordion.Item({
+          title: key === '__default__' ? '默认分组' : key,
+          body,
+          open: true,   // 默认展开，点击分组头收起
+          single: false
+        });
+        wrap.appendChild(acc.item);
+      }
+      return;
+    }
+
     for (const it of filtered) {
       wrap.appendChild(renderCard(it));
     }
@@ -93,7 +124,6 @@
     card.appendChild(el('div', { class: 'archive-card__title' }, it.name || '(未命名)'));
     const meta = el('div', { class: 'archive-card__meta' });
     meta.appendChild(el('span', null, global.fmt.fmtRelative(it.updatedAt || it.createdAt)));
-    if (it.groupId) meta.appendChild(el('span', { class: 'tag tag--group' }, '分组'));
     card.appendChild(meta);
     // 摘要
     let excerpt = '';
