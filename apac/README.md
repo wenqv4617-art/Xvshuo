@@ -21,7 +21,7 @@ apac/
 
 仓库根目录已配置 `.github/workflows/build-apk.yml`。**每次 push 到 main 自动构建**：
 
-1. 首次先配置固定签名（见下节"固定签名"）。
+1. 首次运行 `bash scripts/generate-keystore.sh` 生成 keystore 并 commit 入库（apac/keystore.jks + apac/keystore.properties）。**这一步只做一次**，之后所有构建共用同一签名 → 可覆盖安装。
 2. `git push` 后进入仓库 **Actions** 标签页，等待 `Build Xvshuo APK` 运行完成。
 3. 在运行结果页 **Artifacts** 下载 `xvshuo-apk`，解压得到 `app-release.apk`，直接安装即可。
    > 不是 tar 文件：工作流产物是 APK 本身（GitHub 用 zip 包裹，解压即 .apk）。
@@ -29,22 +29,20 @@ apac/
 
 ## 固定签名（覆盖安装必需）
 
-> 只有签名一致，新 APK 才能覆盖安装旧版本。CI 每次构建必须用同一个 keystore。
+> 只有签名一致，新 APK 才能覆盖安装旧版本。keystore 入库一次，所有 CI 构建共用。
 
-1. 本地执行一次：
-   ```bash
-   bash scripts/generate-keystore.sh
-   ```
-   它会生成 `apac/keystore.jks` + `apac/keystore.properties`，并打印 4 个 Secrets 值。
-2. 打开仓库 **Settings → Secrets and variables → Actions**，新建：
-   - `KEYSTORE_BASE64`（keystore 文件的 base64）
-   - `KS_STORE_PW_B64`（storePassword 的 base64）
-   - `KS_ALIAS_B64`（keyAlias 的 base64）
-   - `KS_KEY_PW_B64`（keyPassword 的 base64）
-3. 之后每次 push，Actions 都会用该 keystore 签名 → **签名一致 + versionCode 自动递增 → 可直接覆盖安装**。
+```bash
+# 一次性生成并入库（在你自己的机器或沙箱里跑一次即可）
+bash scripts/generate-keystore.sh
+git add apac/keystore.jks apac/keystore.properties
+git commit -m "chore: 入库固定签名 keystore"
+git push
+```
 
-> 未配置 Secrets 时，CI 仍会构建但使用 debug 签名（每次不同，无法覆盖安装），日志会警告。
-> keystore 与 properties 已在 .gitignore 中排除，绝不会入库。请备份到安全位置，丢失后无法再升级。
+之后每次 push，Actions 都会用该 keystore 签名 → **签名一致 + versionCode 自动递增 → 可直接覆盖安装**。
+
+> keystore.jks 已入库（不再走 .gitignore）。请同时备份到安全位置，丢失后无法再升级安装。
+> 换签名需先卸载已安装版本。
 
 ## 本地构建
 

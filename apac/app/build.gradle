@@ -1,11 +1,9 @@
 // app/build.gradle — Xvshuo WebView 壳应用模块
-// 签名：存在 keystore.properties（CI 从 Secrets 生成，本地可手建）时用固定 keystore 签 release；
+// 签名：存在 apac/keystore.properties（入库一次）时用固定 keystore 签 release；
 //       缺失时回退 debug 签名（仅本地调试用，无法跨机器覆盖安装）。
-plugins {
-    id 'com.android.application'
-}
+apply plugin: 'com.android.application'
 
-// 读取签名配置（不入库）
+// 读取签名配置（入库一次，不入 .gitignore）
 def ksProps = new Properties()
 def ksFile = rootProject.file('keystore.properties')
 def hasKs = ksFile.exists()
