@@ -37,10 +37,13 @@ jobs:
         with:
           packages: platforms;android-34 build-tools;34.0.0
 
-      - name: Set up Gradle 8.2.2
+      - name: Set up Gradle 8.2.1
+        # 注意：Gradle 8.2.2 从未发布过（services.gradle.org 版本注册表与发行包均为 404），
+        # 之前 setup-gradle 因此报 "Gradle version 8.2.2 does not exist"。
+        # 8.2.1 为 8.2.x 线的真实版本，满足 AGP 8.2.2 的 Gradle >= 8.2 要求。
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.2.2'
+          gradle-version: '8.2.1'
 
       - name: Sync static files into assets/www
         shell: bash
