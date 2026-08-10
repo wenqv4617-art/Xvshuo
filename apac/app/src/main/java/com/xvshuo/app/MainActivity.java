@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.DownloadListener;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -24,10 +26,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.webkit.WebViewAssetLoader;
 
 public class MainActivity extends AppCompatActivity {
@@ -96,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    // 下载监听：data:（base64）解码写入系统下载目录；http(s) 走 DownloadManager
+    // 原生分享桥：前端导出/下载时调用，写入缓存文件并弹出系统分享框
+    webView.addJavascriptInterface(new NativeShareBridge(), "XvshuoNative");
+
+    // 下载监听（兜底）：data:（base64）解码写入系统下载目录；http(s) 走 DownloadManager
     webView.setDownloadListener(new DownloadListener() {
       @Override
       public void onDownloadStart(String url, String userAgent, String contentDisposition,
@@ -193,5 +202,46 @@ public class MainActivity extends AppCompatActivity {
   protected void onDestroy() {
     if (webView != null) webView.destroy();
     super.onDestroy();
+  }
+
+  /**
+   * 原生分享桥（JS 侧 window.XvshuoNative.shareFile(filename, mime, base64)）。
+   * 将导出内容写入缓存目录，并用 FileProvider 生成可分享的 content:// URI，
+   * 弹出系统分享框（QQ/微信/邮件等）。文件仅放在缓存目录，不长期占用存储。
+   */
+  private class NativeShareBridge {
+    @JavascriptInterface
+    public void shareFile(final String filename, final String mime, final String base64Data) {
+      final String safeName = sanitizeFilename(filename);
+      final String type = (mime == null || mime.trim().isEmpty()) ? "application/octet-stream" : mime.trim();
+      runOnUiThread(() -> {
+        try {
+          byte[] bytes = Base64.decode(base64Data == null ? "" : base64Data, Base64.DEFAULT);
+          File dir = new File(getCacheDir(), "share");
+          if (!dir.exists() && !dir.mkdirs()) {
+            throw new IOException("无法创建分享缓存目录");
+          }
+          File file = new File(dir, safeName);
+          try (FileOutputStream os = new FileOutputStream(file)) {
+            os.write(bytes);
+          }
+          Uri uri = FileProvider.getUriForFile(MainActivity.this,
+              getPackageName() + ".fileprovider", file);
+          Intent send = new Intent(Intent.ACTION_SEND);
+          send.setType(type);
+          send.putExtra(Intent.EXTRA_STREAM, uri);
+          send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+          startActivity(Intent.createChooser(send, "分享「" + safeName + "」"));
+        } catch (Exception e) {
+          toast("分享失败：" + e.getMessage());
+        }
+      });
+    }
+  }
+
+  /** 文件名清洗：去掉路径分隔符与非法字符，防止路径注入 */
+  private static String sanitizeFilename(String name) {
+    if (name == null || name.trim().isEmpty()) return "xvshuo-export";
+    return name.replaceAll("[\\\\/:*?\"<>|\\s]+", "_").replaceAll("^_+|_+$", "");
   }
 }

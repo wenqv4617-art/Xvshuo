@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FileProvider 路径映射：仅暴露缓存目录下 share/ 中的临时分享文件 -->
+<paths>
+    <cache-path
+        name="share"
+        path="share/" />
+</paths>

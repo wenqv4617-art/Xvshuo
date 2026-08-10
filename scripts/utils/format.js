@@ -50,20 +50,39 @@
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 0);
   }
+  // 原生兜底：以 data URI + <a download> 触发，由原生 onDownloadStart 保存到下载目录
+  function fallbackDataUriDownload(dataUrl, filename) {
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
   function download(filename, content, mime = 'application/octet-stream') {
     const blob = content instanceof Blob ? content : new Blob([content], { type: mime });
     if (isNativeApp()) {
-      // Android WebView：blob URL 无法被原生下载器解析，改读成 base64 data URI，
-      // 由壳工程 MainActivity 的 onDownloadStart 解码后写入系统下载目录并 Toast 提示
+      // Android WebView：优先调用原生分享桥，弹系统分享框（QQ/微信/邮件等）
+      if (window.XvshuoNative && typeof window.XvshuoNative.shareFile === 'function') {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = String(reader.result || '');
+          const comma = dataUrl.indexOf(',');
+          const b64 = comma >= 0 ? dataUrl.substring(comma + 1) : '';
+          const type = blob.type || mime || 'application/octet-stream';
+          try {
+            window.XvshuoNative.shareFile(filename, type, b64);
+            return;
+          } catch (e) { /* 桥异常时回退 */ }
+          fallbackDataUriDownload(dataUrl, filename);
+        };
+        reader.onerror = () => triggerBlobDownload(blob, filename);
+        reader.readAsDataURL(blob);
+        return;
+      }
+      // 兜底：data URI → 原生 onDownloadStart 解码写入下载目录并提示
       const reader = new FileReader();
-      reader.onload = () => {
-        const a = document.createElement('a');
-        a.href = reader.result;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      };
+      reader.onload = () => fallbackDataUriDownload(reader.result, filename);
       reader.onerror = () => triggerBlobDownload(blob, filename);
       reader.readAsDataURL(blob);
       return;
