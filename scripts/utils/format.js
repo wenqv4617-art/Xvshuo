@@ -36,8 +36,12 @@
   function safeJSON(s, fb) {
     try { return JSON.parse(s); } catch { return fb; }
   }
-  function download(filename, content, mime = 'application/octet-stream') {
-    const blob = content instanceof Blob ? content : new Blob([content], { type: mime });
+  // 是否为 Android WebView（APK 壳通过 UA 注入 XvshuoNative 标记）
+  function isNativeApp() {
+    return (typeof window.XVSHUO_NATIVE !== 'undefined' && window.XVSHUO_NATIVE) ||
+           /XvshuoNative/i.test(navigator.userAgent || '');
+  }
+  function triggerBlobDownload(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url; a.download = filename;
@@ -45,6 +49,26 @@
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
+  function download(filename, content, mime = 'application/octet-stream') {
+    const blob = content instanceof Blob ? content : new Blob([content], { type: mime });
+    if (isNativeApp()) {
+      // Android WebView：blob URL 无法被原生下载器解析，改读成 base64 data URI，
+      // 由壳工程 MainActivity 的 onDownloadStart 解码后写入系统下载目录并 Toast 提示
+      const reader = new FileReader();
+      reader.onload = () => {
+        const a = document.createElement('a');
+        a.href = reader.result;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      reader.onerror = () => triggerBlobDownload(blob, filename);
+      reader.readAsDataURL(blob);
+      return;
+    }
+    triggerBlobDownload(blob, filename);
   }
   function readFile(file) {
     return new Promise((resolve, reject) => {

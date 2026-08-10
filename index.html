@@ -30,13 +30,13 @@
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js" defer></script>
 
 <!-- 样式：HTTP 头静态资源长缓存，版本号通过 ?v 失效 -->
-<link rel="stylesheet" href="/styles/tokens.css?v=1.0.3">
-<link rel="stylesheet" href="/styles/base.css?v=1.0.3">
-<link rel="stylesheet" href="/styles/layout.css?v=1.0.3">
-<link rel="stylesheet" href="/styles/components.css?v=1.0.3">
-<link rel="stylesheet" href="/styles/pages.css?v=1.0.3">
-<link rel="stylesheet" href="/styles/editorial.css?v=1.0.3">
-<link rel="stylesheet" href="/styles/responsive.css?v=1.0.3">
+<link rel="stylesheet" href="/styles/tokens.css?v=1.0.4">
+<link rel="stylesheet" href="/styles/base.css?v=1.0.4">
+<link rel="stylesheet" href="/styles/layout.css?v=1.0.4">
+<link rel="stylesheet" href="/styles/components.css?v=1.0.4">
+<link rel="stylesheet" href="/styles/pages.css?v=1.0.4">
+<link rel="stylesheet" href="/styles/editorial.css?v=1.0.4">
+<link rel="stylesheet" href="/styles/responsive.css?v=1.0.4">
 </head>
 <body>
 
@@ -53,7 +53,7 @@
       <div class="topbar__eyebrow" id="topbarEyebrow">AI PERSONA ATELIER</div>
     </div>
     <div class="topbar__actions">
-      <span class="topbar__ver" id="topbarVer">v1.0.3</span>
+      <span class="topbar__ver" id="topbarVer">v1.0.4</span>
       <button class="icon-btn icon-btn--lg" data-action="nav-archive" aria-label="档案库" title="档案库">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="4" rx="0"/><rect x="3" y="9" width="18" height="4"/><rect x="3" y="15" width="18" height="4"/><line x1="7" y1="5" x2="7" y2="5.01"/><line x1="7" y1="11" x2="7" y2="11.01"/><line x1="7" y1="17" x2="7" y2="17.01"/></svg>
       </button>
@@ -106,7 +106,7 @@
 
         <div style="margin-top:var(--space-12); display:flex; justify-content:space-between; align-items:center; padding-top:var(--space-6); border-top:var(--border-thin); font-size:var(--fs-xs); color:var(--color-ink-muted); letter-spacing:0.08em; text-transform:uppercase;">
           <span>© 2026 Xvshuo</span>
-          <span>v1.0.3</span>
+          <span>v1.0.4</span>
         </div>
       </section>
 
@@ -180,67 +180,67 @@
 <!-- Dexie 已 defer 在 <head> -->
 
 <!-- 自身模块（按依赖顺序 + defer 已保证顺序） -->
-<script src="/scripts/utils/version.js?v=1.0.3" defer></script>
-<script src="/scripts/utils/dom.js?v=1.0.3" defer></script>
-<script src="/scripts/utils/format.js?v=1.0.3" defer></script>
-<script src="/scripts/utils/debounce.js?v=1.0.3" defer></script>
-<script src="/scripts/utils/id.js?v=1.0.3" defer></script>
-<script src="/scripts/utils/clone.js?v=1.0.3" defer></script>
-<script src="/scripts/utils/export.js?v=1.0.3" defer></script>
+<script src="/scripts/utils/version.js?v=1.0.4" defer></script>
+<script src="/scripts/utils/dom.js?v=1.0.4" defer></script>
+<script src="/scripts/utils/format.js?v=1.0.4" defer></script>
+<script src="/scripts/utils/debounce.js?v=1.0.4" defer></script>
+<script src="/scripts/utils/id.js?v=1.0.4" defer></script>
+<script src="/scripts/utils/clone.js?v=1.0.4" defer></script>
+<script src="/scripts/utils/export.js?v=1.0.4" defer></script>
 
-<script src="/scripts/icons.js?v=1.0.3" defer></script>
-<script src="/scripts/events.js?v=1.0.3" defer></script>
-<script src="/scripts/store.js?v=1.0.3" defer></script>
-<script src="/scripts/db.js?v=1.0.3" defer></script>
+<script src="/scripts/icons.js?v=1.0.4" defer></script>
+<script src="/scripts/events.js?v=1.0.4" defer></script>
+<script src="/scripts/store.js?v=1.0.4" defer></script>
+<script src="/scripts/db.js?v=1.0.4" defer></script>
 
-<script src="/scripts/components/ui.js?v=1.0.3" defer></script>
-<script src="/scripts/components/modal.js?v=1.0.3" defer></script>
-<script src="/scripts/components/toast.js?v=1.0.3" defer></script>
-<script src="/scripts/components/accordion.js?v=1.0.3" defer></script>
-<script src="/scripts/components/tabs.js?v=1.0.3" defer></script>
-<script src="/scripts/components/tag-library.js?v=1.0.3" defer></script>
-<script src="/scripts/components/loading-overlay.js?v=1.0.3" defer></script>
+<script src="/scripts/components/ui.js?v=1.0.4" defer></script>
+<script src="/scripts/components/modal.js?v=1.0.4" defer></script>
+<script src="/scripts/components/toast.js?v=1.0.4" defer></script>
+<script src="/scripts/components/accordion.js?v=1.0.4" defer></script>
+<script src="/scripts/components/tabs.js?v=1.0.4" defer></script>
+<script src="/scripts/components/tag-library.js?v=1.0.4" defer></script>
+<script src="/scripts/components/loading-overlay.js?v=1.0.4" defer></script>
 
 <!-- API 适配层 -->
-<script src="/scripts/api/protocol.js?v=1.0.3" defer></script>
-<script src="/scripts/api/adapters/openai.js?v=1.0.3" defer></script>
-<script src="/scripts/api/adapters/anthropic.js?v=1.0.3" defer></script>
-<script src="/scripts/api/adapters/gemini.js?v=1.0.3" defer></script>
-<script src="/scripts/api/adapters/custom.js?v=1.0.3" defer></script>
-<script src="/scripts/api/client.js?v=1.0.3" defer></script>
-<script src="/scripts/api/response-parser.js?v=1.0.3" defer></script>
+<script src="/scripts/api/protocol.js?v=1.0.4" defer></script>
+<script src="/scripts/api/adapters/openai.js?v=1.0.4" defer></script>
+<script src="/scripts/api/adapters/anthropic.js?v=1.0.4" defer></script>
+<script src="/scripts/api/adapters/gemini.js?v=1.0.4" defer></script>
+<script src="/scripts/api/adapters/custom.js?v=1.0.4" defer></script>
+<script src="/scripts/api/client.js?v=1.0.4" defer></script>
+<script src="/scripts/api/response-parser.js?v=1.0.4" defer></script>
 
 <!-- 标签库数据 -->
-<script src="/scripts/data/tags-appearance.js?v=1.0.3" defer></script>
-<script src="/scripts/data/tags-personality.js?v=1.0.3" defer></script>
-<script src="/scripts/data/tags-history.js?v=1.0.3" defer></script>
-<script src="/scripts/data/tags-speech.js?v=1.0.3" defer></script>
-<script src="/scripts/data/tags-relations.js?v=1.0.3" defer></script>
-<script src="/scripts/data/tags-scenario.js?v=1.0.3" defer></script>
+<script src="/scripts/data/tags-appearance.js?v=1.0.4" defer></script>
+<script src="/scripts/data/tags-personality.js?v=1.0.4" defer></script>
+<script src="/scripts/data/tags-history.js?v=1.0.4" defer></script>
+<script src="/scripts/data/tags-speech.js?v=1.0.4" defer></script>
+<script src="/scripts/data/tags-relations.js?v=1.0.4" defer></script>
+<script src="/scripts/data/tags-scenario.js?v=1.0.4" defer></script>
 
 <!-- Prompt 构建器 -->
-<script src="/scripts/generators/user-prompt.js?v=1.0.3" defer></script>
-<script src="/scripts/generators/char-prompt.js?v=1.0.3" defer></script>
-<script src="/scripts/generators/worldbook-prompt.js?v=1.0.3" defer></script>
-<script src="/scripts/generators/regex-prompt.js?v=1.0.3" defer></script>
-<script src="/scripts/generators/side-story-prompt.js?v=1.0.3" defer></script>
-<script src="/scripts/generators/html-prompt.js?v=1.0.3" defer></script>
+<script src="/scripts/generators/user-prompt.js?v=1.0.4" defer></script>
+<script src="/scripts/generators/char-prompt.js?v=1.0.4" defer></script>
+<script src="/scripts/generators/worldbook-prompt.js?v=1.0.4" defer></script>
+<script src="/scripts/generators/regex-prompt.js?v=1.0.4" defer></script>
+<script src="/scripts/generators/side-story-prompt.js?v=1.0.4" defer></script>
+<script src="/scripts/generators/html-prompt.js?v=1.0.4" defer></script>
 
-<script src="/scripts/pages/home.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/settings.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/user-gen.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/char-gen.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/archive.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/worldbook.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/style.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/regex.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/side-story.js?v=1.0.3" defer></script>
-<script src="/scripts/pages/html-snippet.js?v=1.0.3" defer></script>
+<script src="/scripts/pages/home.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/settings.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/user-gen.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/char-gen.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/archive.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/worldbook.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/style.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/regex.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/side-story.js?v=1.0.4" defer></script>
+<script src="/scripts/pages/html-snippet.js?v=1.0.4" defer></script>
 
-<script src="/scripts/router.js?v=1.0.3" defer></script>
-<script src="/scripts/app.js?v=1.0.3" defer></script>
+<script src="/scripts/router.js?v=1.0.4" defer></script>
+<script src="/scripts/app.js?v=1.0.4" defer></script>
 
 <!-- PWA 注册（最后） -->
-<script src="/scripts/pwa/register.js?v=1.0.3" defer></script>
+<script src="/scripts/pwa/register.js?v=1.0.4" defer></script>
 </body>
 </html>

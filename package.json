@@ -1,0 +1,12 @@
+{
+  "name": "xvshuo",
+  "version": "1.0.4",
+  "private": true,
+  "description": "叙说 Xvshuo · AI 人设生成器（纯前端 PWA，dexie 本地存储）",
+  "scripts": {
+    "serve": "python3 -m http.server 8080",
+    "apk": "bash scripts/build-apk.sh",
+    "apk:release": "bash scripts/build-apk.sh release"
+  },
+  "license": "MIT"
+}

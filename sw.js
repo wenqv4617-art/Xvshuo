@@ -6,7 +6,7 @@
  *  - API 请求 → 不缓存（透传）
  */
 
-const APP_VERSION = '1.0.3';
+const APP_VERSION = '1.0.4';
 const CACHE_NAME = 'xvshuo-v' + APP_VERSION;
 
 // 预缓存 app shell（不带版本号的会被 HTML 重新引用时刷新）

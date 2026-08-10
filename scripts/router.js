@@ -74,11 +74,13 @@
     global.store.set('currentPage', { key, params, path });
     window.scrollTo({ top: 0, behavior: 'instant' });
 
-    // 底部操作栏：仅在 user / char 生成页显示，离开即隐藏
-    const keepBar = key === 'user-gen' || key === 'char-gen' || key === 'user-gen/:panel' || key === 'char-gen/:panel';
-    document.querySelectorAll('.gen-actionbar').forEach((b) => {
-      b.style.display = keepBar ? '' : 'none';
-    });
+    // 底部操作栏：严格按当前页归属显示，user 页隐藏 char 栏、char 页隐藏 user 栏
+    const isUserPage = key === 'user-gen' || key === 'user-gen/:panel';
+    const isCharPage = key === 'char-gen' || key === 'char-gen/:panel';
+    const userBar = document.getElementById('userGenActionBar');
+    const charBar = document.getElementById('charGenActionBar');
+    if (userBar) userBar.style.display = isUserPage ? '' : 'none';
+    if (charBar) charBar.style.display = isCharPage ? '' : 'none';
 
     // 上下文侧边栏
     renderSidenav(key, params, path);
